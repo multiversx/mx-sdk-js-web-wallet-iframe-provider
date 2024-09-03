@@ -1,6 +1,6 @@
-# mx-sdk-js-metamask-proxy-provider
+# mx-sdk-js-web-wallet-iframe-provider
 
-Signing provider for dApps: Metamask Proxy Provider. 
+Signing provider for dApps: Web Wallet Iframe Provider. 
 
 Documentation is available on [docs.multiversx.com](https://docs.multiversx.com/sdk-and-tools/sdk-js/sdk-js-signing-providers), while an integration example can be found [here](https://github.com/multiversx/mx-sdk-js-examples/tree/main/signing-providers).
 
@@ -8,14 +8,14 @@ Note that **we recommend using [sdk-dapp](https://github.com/multiversx/mx-sdk-d
 
 ## Distribution
 
-[npm](https://www.npmjs.com/package/@multiversx/sdk-metamask-proxy-provider)
+[npm](https://www.npmjs.com/package/@multiversx/mx-sdk-js-web-wallet-iframe-provider)
 
 ## Installation
 
-`sdk-metamask-proxy-provider` is delivered via [npm](https://www.npmjs.com/package/@multiversx/sdk-metamask-proxy-provider), therefore it can be installed as follows:
+`sdk-web-wallet-iframe-provider` is delivered via [npm](https://www.npmjs.com/package/@multiversx/sdk-web-wallet-iframe-provider), therefore it can be installed as follows:
 
 ```
-npm install @multiversx/sdk-metamask-proxy-provider
+npm install @multiversx/sdk-web-wallet-iframe-provider
 ```
 
 ### Building the library

@@ -7,13 +7,12 @@ import {
 } from '@multiversx/sdk-dapp-utils/out/types';
 import { WindowManager } from '@multiversx/sdk-web-wallet-cross-window-provider/out/WindowManager';
 import { safeDocument, safeWindow } from '../constants';
-import { MetamaskProxyProviderEventDataType } from '../MetamaskProxyProvider';
-import { MetamaskProxyProviderContentWindowModel } from './MetamaskProxyProviderContentWindow.model';
+import { IframeProviderEventDataType } from '../IframeProvider';
+import { IframeProviderContentWindowModel } from './IframeProviderContentWindow.model';
 
-export class MetamaskProxyManager extends WindowManager {
-  private metamaskProxyWalletComponent: MetamaskProxyProviderContentWindowModel | null =
-    null;
-  private readonly iframeId = 'metamask-proxy-wallet';
+export class IframeManager extends WindowManager {
+  private iframeWalletComponent: IframeProviderContentWindowModel | null = null;
+  private readonly iframeId = 'mx-iframe-wallet';
 
   constructor(props?: { onDisconnect?: () => Promise<boolean> }) {
     super();
@@ -22,8 +21,8 @@ export class MetamaskProxyManager extends WindowManager {
     });
   }
 
-  public get metamaskProxyWallet() {
-    return this.metamaskProxyWalletComponent;
+  public get iframeWallet() {
+    return this.iframeWalletComponent;
   }
 
   public override async postMessage<T extends WindowProviderRequestEnums>({
@@ -45,7 +44,7 @@ export class MetamaskProxyManager extends WindowManager {
 
   public override async closeConnection(): Promise<boolean> {
     const result = await super.closeConnection();
-    this.metamaskProxyWalletComponent?.remove();
+    this.iframeWalletComponent?.remove();
     this.walletWindow = null;
     return result;
   }
@@ -59,32 +58,31 @@ export class MetamaskProxyManager extends WindowManager {
       return;
     }
 
-    this.metamaskProxyWallet?.setWalletVisible(false);
+    this.iframeWallet?.setWalletVisible(false);
   }
 
   public override async setWalletWindow(): Promise<void> {
     if (this.walletWindow) {
-      this.metamaskProxyWallet?.setWalletVisible(true);
+      this.iframeWallet?.setWalletVisible(true);
       return;
     }
 
     const anchor = safeDocument.getElementById?.('root');
 
-    const module = await import('./MetamaskProxyProviderContentWindow');
-    const MetamaskProxyProviderContentWindow =
-      module.MetamaskProxyProviderContentWindow;
+    const module = await import('./IframeProviderContentWindow');
+    const IframeProviderContentWindow = module.IframeProviderContentWindow;
 
-    this.metamaskProxyWalletComponent = new MetamaskProxyProviderContentWindow({
+    this.iframeWalletComponent = new IframeProviderContentWindow({
       id: this.iframeId,
       anchor,
       url: this.walletUrl
     });
-    this.metamaskProxyWalletComponent.walletAddress = this.walletUrl;
+    this.iframeWalletComponent.walletAddress = this.walletUrl;
 
     const iframe = await new Promise(
       (resolve: (value?: HTMLIFrameElement) => void) => {
-        this.metamaskProxyWalletComponent?.addEventListener(
-          'metamaskProxyWindowReady',
+        this.iframeWalletComponent?.addEventListener(
+          'iframeWindowReady',
           (event: Event & { detail?: HTMLIFrameElement }) => {
             resolve(event.detail);
           }
@@ -101,7 +99,7 @@ export class MetamaskProxyManager extends WindowManager {
   }
 
   public setWalletVisible(visible: boolean): void {
-    this.metamaskProxyWalletComponent?.setWalletVisible(visible);
+    this.iframeWalletComponent?.setWalletVisible(visible);
   }
 
   private registerToChildResponse = <
@@ -111,7 +109,7 @@ export class MetamaskProxyManager extends WindowManager {
   }) => {
     safeWindow.addEventListener?.(
       'message',
-      async (event: MessageEvent<MetamaskProxyProviderEventDataType<T>>) => {
+      async (event: MessageEvent<IframeProviderEventDataType<T>>) => {
         const { data } = event;
 
         const type = data.type;

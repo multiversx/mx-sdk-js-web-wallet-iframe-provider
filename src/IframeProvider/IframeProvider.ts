@@ -14,33 +14,32 @@ import {
   ErrCouldNotLogin,
   ErrProviderNotInitialized
 } from '@multiversx/sdk-web-wallet-cross-window-provider/out/errors';
-import { MetamaskProxyManager } from '../MetamaskProxyManager/MetamaskProxyManager';
+import { IframeManager } from '../IframeManager/IframeManager';
 
-export type MetamaskProxyProviderEventDataType<
-  T extends WindowProviderResponseEnums
-> = {
-  type: T;
-  payload: ReplyWithPostMessagePayloadType<T>;
-};
+export type IframeProviderEventDataType<T extends WindowProviderResponseEnums> =
+  {
+    type: T;
+    payload: ReplyWithPostMessagePayloadType<T>;
+  };
 
-export class MetamaskProxyProvider extends CrossWindowProvider {
-  protected static _instance: MetamaskProxyProvider | null = null;
-  protected readonly windowManager: MetamaskProxyManager;
+export class IframeProvider extends CrossWindowProvider {
+  protected static _instance: IframeProvider | null = null;
+  protected readonly windowManager: IframeManager;
 
   public constructor() {
     super();
-    this.windowManager = new MetamaskProxyManager({
+    this.windowManager = new IframeManager({
       onDisconnect: this.logout.bind(this)
     });
   }
 
-  public static getInstance(): MetamaskProxyProvider {
-    if (!MetamaskProxyProvider._instance) {
-      MetamaskProxyProvider._instance = new MetamaskProxyProvider();
-      return <MetamaskProxyProvider>MetamaskProxyProvider._instance;
+  public static getInstance(): IframeProvider {
+    if (!IframeProvider._instance) {
+      IframeProvider._instance = new IframeProvider();
+      return <IframeProvider>IframeProvider._instance;
     }
 
-    return <MetamaskProxyProvider>MetamaskProxyProvider._instance;
+    return <IframeProvider>IframeProvider._instance;
   }
 
   public override async init(): Promise<boolean> {
@@ -59,7 +58,7 @@ export class MetamaskProxyProvider extends CrossWindowProvider {
     const account = await super.login(options);
 
     if (!account.address) {
-      this.windowManager.metamaskProxyWallet?.remove();
+      this.windowManager.iframeWallet?.remove();
       this.windowManager.walletWindow = null;
       throw new ErrCouldNotLogin();
     }

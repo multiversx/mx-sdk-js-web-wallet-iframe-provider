@@ -1,4 +1,4 @@
-export interface MetamaskProxyProviderContentWindowModel {
+export interface IframeProviderContentWindowModel {
   readonly contentWindow: Window | null;
   walletAddress: string;
   getContainer(): HTMLDivElement;

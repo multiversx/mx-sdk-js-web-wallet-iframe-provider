@@ -7,17 +7,17 @@ import {
   iframeStyle,
   titleElementStyle,
   toggleIconElementStyle
-} from './MetamaskProxyManager.styles';
-import { MetamaskProxyProviderContentWindowModel } from './MetamaskProxyProviderContentWindow.model';
+} from './IframeManager.styles';
+import { IframeProviderContentWindowModel } from './IframeProviderContentWindow.model';
 
-type MetamaskProxyProviderContentWindowProps = {
+type IframeProviderContentWindowProps = {
   id: string;
   url: string;
   anchor?: HTMLElement;
 };
 
-export class MetamaskProxyProviderContentWindow
-  implements MetamaskProxyProviderContentWindowModel
+export class IframeProviderContentWindow
+  implements IframeProviderContentWindowModel
 {
   public contentWindow: Window | null;
   public walletAddress = '';
@@ -28,7 +28,7 @@ export class MetamaskProxyProviderContentWindow
   private readonly body: HTMLDivElement;
   private readonly iframe: HTMLIFrameElement;
 
-  public constructor(props: MetamaskProxyProviderContentWindowProps) {
+  public constructor(props: IframeProviderContentWindowProps) {
     const { id, url, anchor } = props;
 
     this.container = safeDocument.createElement?.('div');
@@ -63,25 +63,25 @@ export class MetamaskProxyProviderContentWindow
   }
 
   private buildHeader() {
-    const metaMaskIcon =
+    const iframeIcon =
       '<img src="https://developer.apple.com/assets/elements/icons/passkeys/passkeys-96x96_2x.png" class="icon-passkeys center" width="50" alt="" data-hires-status="pending">';
 
     const toggleIcon =
       '<svg aria-hidden="true" focusable="false" data-prefix="far" data-icon="arrow-right-to-line" class="svg-inline--fa fa-arrow-right-to-line " role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" style="width: 20px;color: #737373;"><path fill="currentColor" d="M448 88c0-13.3-10.7-24-24-24s-24 10.7-24 24l0 336c0 13.3 10.7 24 24 24s24-10.7 24-24l0-336zM312.4 273.5c4.8-4.5 7.6-10.9 7.6-17.5s-2.7-12.9-7.6-17.5l-136-128c-9.7-9.1-24.8-8.6-33.9 1s-8.6 24.8 1 33.9L235.5 232 152 232 24 232c-13.3 0-24 10.7-24 24s10.7 24 24 24l128 0 83.5 0-91.9 86.5c-9.7 9.1-10.1 24.3-1 33.9s24.3 10.1 33.9 1l136-128z"></path></svg>';
 
     const headingElement = safeDocument.createElement?.('div');
-    const metaMaskIconElement = safeDocument.createElement?.('div');
+    const iframeIconElement = safeDocument.createElement?.('div');
     const toggleIconElement = safeDocument.createElement?.('div');
 
-    metaMaskIconElement.innerHTML = metaMaskIcon;
+    iframeIconElement.innerHTML = iframeIcon;
     toggleIconElement.innerHTML = toggleIcon;
     toggleIconElement.style.cssText = toggleIconElementStyle;
     this.title.innerText = 'Passkey Login';
     this.title.style.cssText = titleElementStyle;
 
-    headingElement.id = 'metamask-proxy-window-toggle-button';
+    headingElement.id = 'mx-wallet-iframe-window-toggle-button';
     headingElement.style.cssText = headingElementStyle;
-    headingElement.appendChild(metaMaskIconElement);
+    headingElement.appendChild(iframeIconElement);
     headingElement.appendChild(this.title);
     headingElement.appendChild(toggleIconElement);
 
@@ -108,7 +108,7 @@ export class MetamaskProxyProviderContentWindow
     this.iframe.onload = () => {
       this.contentWindow = this.iframe.contentWindow;
 
-      const event = new CustomEvent('metamaskProxyWindowReady', {
+      const event = new CustomEvent('mxWalletIframeWindowReady', {
         detail: this.iframe
       });
 
