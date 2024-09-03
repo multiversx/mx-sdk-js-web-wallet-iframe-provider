@@ -3,3 +3,8 @@ export const safeDocument =
   typeof document !== 'undefined' ? document : ({} as any);
 
 export const iframeWindowReadyEvent = 'iframeWindowReady';
+
+export enum IframeLoginTypes {
+  metamask = 'metamask',
+  passkey = 'passkey'
+}

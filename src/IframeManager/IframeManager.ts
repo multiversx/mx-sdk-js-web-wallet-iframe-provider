@@ -6,13 +6,14 @@ import {
   PostMessageReturnType
 } from '@multiversx/sdk-dapp-utils/out/types';
 import { WindowManager } from '@multiversx/sdk-web-wallet-cross-window-provider/out/WindowManager';
-import { iframeWindowReadyEvent, safeDocument, safeWindow } from '../constants';
+import { IframeLoginTypes, iframeWindowReadyEvent, safeDocument, safeWindow } from '../constants';
 import { IframeProviderEventDataType } from '../IframeProvider';
 import { IframeProviderContentWindowModel } from './IframeProviderContentWindow.model';
 
 export class IframeManager extends WindowManager {
   private iframeWalletComponent: IframeProviderContentWindowModel | null = null;
   private readonly iframeId = 'mx-iframe-wallet';
+  private loginType = IframeLoginTypes.metamask;
 
   constructor(props?: { onDisconnect?: () => Promise<boolean> }) {
     super();
@@ -20,10 +21,12 @@ export class IframeManager extends WindowManager {
       onDisconnect: props?.onDisconnect
     });
   }
+  
 
   public get iframeWallet() {
     return this.iframeWalletComponent;
   }
+
 
   public override async postMessage<T extends WindowProviderRequestEnums>({
     type,
@@ -47,6 +50,10 @@ export class IframeManager extends WindowManager {
     this.iframeWalletComponent?.remove();
     this.walletWindow = null;
     return result;
+  }
+
+  public async setLoginType(loginType: IframeLoginTypes) {
+    this.loginType = loginType;
   }
 
   public override isWalletOpened(): boolean {
@@ -75,7 +82,8 @@ export class IframeManager extends WindowManager {
     this.iframeWalletComponent = new IframeProviderContentWindow({
       id: this.iframeId,
       anchor,
-      url: this.walletUrl
+      url: this.walletUrl,
+      loginType: this.loginType
     });
     this.iframeWalletComponent.walletAddress = this.walletUrl;
 
