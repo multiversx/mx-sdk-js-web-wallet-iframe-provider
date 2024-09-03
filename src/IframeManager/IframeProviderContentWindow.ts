@@ -1,4 +1,4 @@
-import { safeDocument } from '../constants';
+import { iframeWindowReadyEvent, safeDocument } from '../constants';
 import {
   bodyStyle,
   containerStyle,
@@ -108,7 +108,7 @@ export class IframeProviderContentWindow
     this.iframe.onload = () => {
       this.contentWindow = this.iframe.contentWindow;
 
-      const event = new CustomEvent('mxWalletIframeWindowReady', {
+      const event = new CustomEvent(iframeWindowReadyEvent, {
         detail: this.iframe
       });
 

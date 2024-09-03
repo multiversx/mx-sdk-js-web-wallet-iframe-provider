@@ -6,7 +6,7 @@ import {
   PostMessageReturnType
 } from '@multiversx/sdk-dapp-utils/out/types';
 import { WindowManager } from '@multiversx/sdk-web-wallet-cross-window-provider/out/WindowManager';
-import { safeDocument, safeWindow } from '../constants';
+import { iframeWindowReadyEvent, safeDocument, safeWindow } from '../constants';
 import { IframeProviderEventDataType } from '../IframeProvider';
 import { IframeProviderContentWindowModel } from './IframeProviderContentWindow.model';
 
@@ -82,7 +82,7 @@ export class IframeManager extends WindowManager {
     const iframe = await new Promise(
       (resolve: (value?: HTMLIFrameElement) => void) => {
         this.iframeWalletComponent?.addEventListener(
-          'iframeWindowReady',
+          iframeWindowReadyEvent,
           (event: Event & { detail?: HTMLIFrameElement }) => {
             resolve(event.detail);
           }
