@@ -14,6 +14,7 @@ import {
   ErrCouldNotLogin,
   ErrProviderNotInitialized
 } from '@multiversx/sdk-web-wallet-cross-window-provider/out/errors';
+import { IframeLoginTypes } from '../constants';
 import { IframeManager } from '../IframeManager/IframeManager';
 
 export type IframeProviderEventDataType<T extends WindowProviderResponseEnums> =
@@ -25,6 +26,7 @@ export type IframeProviderEventDataType<T extends WindowProviderResponseEnums> =
 export class IframeProvider extends CrossWindowProvider {
   protected static _instance: IframeProvider | null = null;
   protected readonly windowManager: IframeManager;
+  private loginType: IframeLoginTypes = IframeLoginTypes.metamask;
 
   public constructor() {
     super();
@@ -47,6 +49,16 @@ export class IframeProvider extends CrossWindowProvider {
     await this.windowManager.setWalletWindow();
 
     return initialized;
+  }
+
+  public setLoginType(loginType: IframeLoginTypes): void {
+    this.loginType = loginType;
+    this.windowManager.setLoginType(loginType);
+  }
+
+  public override setWalletUrl(url: string): CrossWindowProvider {
+    const newUrl = `${url}/?iframeProviderLoginType=${this.loginType}`;
+    return super.setWalletUrl(newUrl);
   }
 
   public override async login(
