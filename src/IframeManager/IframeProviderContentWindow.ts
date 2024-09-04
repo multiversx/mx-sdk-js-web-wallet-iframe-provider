@@ -56,7 +56,8 @@ export class IframeProviderContentWindow
     this.iframe = safeDocument.createElement?.('iframe');
 
     if (loginType === IframeLoginTypes.passkey) {
-      this.iframe.allow = 'publickey-credentials-get *';
+      this.iframe.allow =
+        'publickey-credentials-get *; publickey-credentials-create *;';
     }
 
     this.buildWindow(id, url);
