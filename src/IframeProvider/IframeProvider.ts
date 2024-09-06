@@ -1,19 +1,17 @@
-import type { SignableMessage } from '@multiversx/sdk-core/out';
+import { Message } from '@multiversx/sdk-core/out';
 import type { Transaction } from '@multiversx/sdk-core/out/transaction';
 import {
-  WindowProviderResponseEnums,
-  ReplyWithPostMessagePayloadType
-} from '@multiversx/sdk-dapp-utils/out';
-import {
   CrossWindowProvider,
-  ICrossWindowWalletAccount
+  IProviderAccount
   // !!! IMPORTANT !!! It is necessary to import explicitly from the file because the module exports (can export) some classes
   // that are using window API and will break the build process on the SSR environments (e.g. PopupConsent)
 } from '@multiversx/sdk-web-wallet-cross-window-provider/out/CrossWindowProvider/CrossWindowProvider';
+import { WindowProviderResponseEnums } from '@multiversx/sdk-web-wallet-cross-window-provider/out/enums';
 import {
   ErrCouldNotLogin,
   ErrProviderNotInitialized
 } from '@multiversx/sdk-web-wallet-cross-window-provider/out/errors';
+import { ReplyWithPostMessagePayloadType } from '@multiversx/sdk-web-wallet-cross-window-provider/out/types';
 import { IframeLoginTypes } from '../constants';
 import { IframeManager } from '../IframeManager/IframeManager';
 
@@ -65,7 +63,7 @@ export class IframeProvider extends CrossWindowProvider {
     options: {
       token?: string;
     } = {}
-  ): Promise<ICrossWindowWalletAccount> {
+  ): Promise<IProviderAccount> {
     await this.windowManager.setWalletWindow();
     const account = await super.login(options);
 
@@ -121,11 +119,9 @@ export class IframeProvider extends CrossWindowProvider {
     return super.guardTransactions(transactions);
   }
 
-  public override async signMessage(
-    message: SignableMessage
-  ): Promise<SignableMessage> {
+  public override async signMessage(messageToSign: string): Promise<Message> {
     await this.windowManager.setWalletWindow();
-    return super.signMessage(message);
+    return super.signMessage(messageToSign);
   }
 
   public override async openPopupConsent(): Promise<boolean> {

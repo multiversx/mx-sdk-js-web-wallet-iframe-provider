@@ -1,12 +1,17 @@
-import { WindowProviderResponseEnums } from '@multiversx/sdk-dapp-utils/out';
-import { responseTypeMap } from '@multiversx/sdk-dapp-utils/out/constants/windowProviderConstants';
-import { WindowProviderRequestEnums } from '@multiversx/sdk-dapp-utils/out/enums/windowProviderEnums';
+import { responseTypeMap } from '@multiversx/sdk-web-wallet-cross-window-provider/out/constants/windowProviderConstants';
+import { WindowProviderResponseEnums } from '@multiversx/sdk-web-wallet-cross-window-provider/out/enums';
+import { WindowProviderRequestEnums } from '@multiversx/sdk-web-wallet-cross-window-provider/out/enums/windowProviderEnums';
 import {
   PostMessageParamsType,
   PostMessageReturnType
-} from '@multiversx/sdk-dapp-utils/out/types';
+} from '@multiversx/sdk-web-wallet-cross-window-provider/out/types';
 import { WindowManager } from '@multiversx/sdk-web-wallet-cross-window-provider/out/WindowManager';
-import { IframeLoginTypes, iframeWindowReadyEvent, safeDocument, safeWindow } from '../constants';
+import {
+  IframeLoginTypes,
+  iframeWindowReadyEvent,
+  safeDocument,
+  safeWindow
+} from '../constants';
 import { IframeProviderEventDataType } from '../IframeProvider';
 import { IframeProviderContentWindowModel } from './IframeProviderContentWindow.model';
 
@@ -21,12 +26,10 @@ export class IframeManager extends WindowManager {
       onDisconnect: props?.onDisconnect
     });
   }
-  
 
   public get iframeWallet() {
     return this.iframeWalletComponent;
   }
-
 
   public override async postMessage<T extends WindowProviderRequestEnums>({
     type,
