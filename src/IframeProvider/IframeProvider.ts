@@ -121,6 +121,7 @@ export class IframeProvider extends CrossWindowProvider {
 
   public override async signMessage(messageToSign: Message): Promise<Message> {
     await this.windowManager.setWalletWindow();
+    messageToSign.signer = this.loginType;
     return super.signMessage(messageToSign);
   }
 
