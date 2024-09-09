@@ -20,7 +20,7 @@
   "author": "MultiversX",
   "license": "GPL-3.0-or-later",
   "devDependencies": {
-    "@multiversx/sdk-core": ">= 12.18.0",
+    "@multiversx/sdk-core": ">= 13.5.0",
     "@multiversx/sdk-web-wallet-cross-window-provider": ">= 2.0.0-alpha.1",
     "@types/node": "18.19.0",
     "@typescript-eslint/eslint-plugin": "5.0.0",
@@ -41,7 +41,7 @@
     "typescript": "5.0.4"
   },
   "peerDependencies": {
-    "@multiversx/sdk-core": ">= 12.18.0",
+    "@multiversx/sdk-core": ">= 13.5.0",
     "@multiversx/sdk-web-wallet-cross-window-provider": ">= 2.0.0-alpha.1"
   },
   "dependencies": {
