@@ -21,7 +21,7 @@
   "license": "GPL-3.0-or-later",
   "devDependencies": {
     "@multiversx/sdk-core": ">= 12.18.0",
-    "@multiversx/sdk-dapp-utils": ">= 0.1.0",
+    "@multiversx/sdk-dapp-utils": ">= 0.0.1",
     "@multiversx/sdk-web-wallet-cross-window-provider": ">= 1.0.0",
     "@types/node": "18.19.0",
     "@typescript-eslint/eslint-plugin": "5.0.0",
@@ -43,7 +43,7 @@
   },
   "peerDependencies": {
     "@multiversx/sdk-core": ">= 12.18.0",
-    "@multiversx/sdk-dapp-utils": ">= 0.1.0"
+    "@multiversx/sdk-dapp-utils": ">= 0.0.1"
   },
   "dependencies": {
     "@types/jest": "^29.5.11",
