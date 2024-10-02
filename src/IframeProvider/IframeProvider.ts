@@ -104,27 +104,35 @@ export class IframeProvider extends CrossWindowProvider {
     transaction: Transaction
   ): Promise<Transaction> {
     await this.windowManager.setWalletWindow();
-    return super.signTransaction(transaction);
+    const data = await super.signTransaction(transaction);
+    this.windowManager.closeWalletWindow();
+    return data;
   }
 
   public override async signTransactions(
     transactions: Transaction[]
   ): Promise<Transaction[]> {
     await this.windowManager.setWalletWindow();
-    return super.signTransactions(transactions);
+    const data = await super.signTransactions(transactions);
+    this.windowManager.closeWalletWindow();
+    return data;
   }
 
   public override async guardTransactions(
     transactions: Transaction[]
   ): Promise<Transaction[]> {
     await this.windowManager.setWalletWindow();
-    return super.guardTransactions(transactions);
+    const data = await super.guardTransactions(transactions);
+    this.windowManager.closeWalletWindow();
+    return data;
   }
 
   public override async signMessage(messageToSign: Message): Promise<Message> {
     await this.windowManager.setWalletWindow();
     messageToSign.signer = this.loginType;
-    return super.signMessage(messageToSign);
+    const data = await super.signMessage(messageToSign);
+    this.windowManager.closeWalletWindow();
+    return data;
   }
 
   public override async openPopupConsent(): Promise<boolean> {
