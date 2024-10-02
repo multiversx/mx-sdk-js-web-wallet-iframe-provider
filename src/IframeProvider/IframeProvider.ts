@@ -73,6 +73,8 @@ export class IframeProvider extends CrossWindowProvider {
       throw new ErrCouldNotLogin();
     }
 
+    this.windowManager.closeWalletWindow();
+
     return account;
   }
 
