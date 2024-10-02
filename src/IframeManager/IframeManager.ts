@@ -19,6 +19,7 @@ export class IframeManager extends WindowManager {
   private iframeWalletComponent: IframeProviderContentWindowModel | null = null;
   private readonly iframeId = 'mx-iframe-wallet';
   private loginType = IframeLoginTypes.metamask;
+  private hasHandshake = false;
 
   constructor(props?: { onDisconnect?: () => Promise<boolean> }) {
     super();
@@ -35,7 +36,11 @@ export class IframeManager extends WindowManager {
     type,
     payload
   }: PostMessageParamsType<T>): Promise<PostMessageReturnType<T>> {
-    await this.handshake(type);
+    this.hasHandshake = await this.handshake(type);
+
+    if (!this.hasHandshake) {
+      throw new Error('Cannot establish handshake');
+    }
 
     this.walletWindow?.postMessage(
       {
@@ -60,7 +65,7 @@ export class IframeManager extends WindowManager {
   }
 
   public override isWalletOpened(): boolean {
-    return Boolean(this.walletWindow);
+    return Boolean(this.walletWindow) && this.hasHandshake;
   }
 
   public override closeWalletWindow(): void {
