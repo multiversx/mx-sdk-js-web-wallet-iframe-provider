@@ -1,15 +1,20 @@
 import { Message } from '@multiversx/sdk-core/out';
-import type { Transaction } from '@multiversx/sdk-core/out/transaction';
+import { Transaction } from '@multiversx/sdk-core/out/transaction';
 import {
   CrossWindowProvider,
   IProviderAccount
   // !!! IMPORTANT !!! It is necessary to import explicitly from the file because the module exports (can export) some classes
   // that are using window API and will break the build process on the SSR environments (e.g. PopupConsent)
 } from '@multiversx/sdk-web-wallet-cross-window-provider/out/CrossWindowProvider/CrossWindowProvider';
-import { WindowProviderResponseEnums } from '@multiversx/sdk-web-wallet-cross-window-provider/out/enums';
+import {
+  WindowProviderRequestEnums,
+  WindowProviderResponseEnums
+} from '@multiversx/sdk-web-wallet-cross-window-provider/out/enums';
 import {
   ErrCouldNotLogin,
-  ErrProviderNotInitialized
+  ErrCouldNotSignTransactions,
+  ErrProviderNotInitialized,
+  ErrTransactionCancelled
 } from '@multiversx/sdk-web-wallet-cross-window-provider/out/errors';
 import { ReplyWithPostMessagePayloadType } from '@multiversx/sdk-web-wallet-cross-window-provider/out/types';
 import { IframeLoginTypes } from '../constants';
@@ -113,7 +118,36 @@ export class IframeProvider extends CrossWindowProvider {
     transactions: Transaction[]
   ): Promise<Transaction[]> {
     await this.windowManager.setWalletWindow();
-    const data = await super.signTransactions(transactions);
+    this.ensureConnected();
+
+    const {
+      type,
+      payload: { data: signedPlainTransactions, error }
+    } = await this.windowManager.postMessage({
+      type: WindowProviderRequestEnums.signTransactionsRequest,
+      payload: transactions.map((tx) => tx.toPlainObject())
+    });
+
+    if (error || !signedPlainTransactions) {
+      this.windowManager.closeWalletWindow();
+      throw new ErrCouldNotSignTransactions();
+    }
+
+    if (type === WindowProviderResponseEnums.cancelResponse) {
+      this.windowManager.closeWalletWindow();
+      throw new ErrTransactionCancelled();
+    }
+
+    const hasTransactions = signedPlainTransactions?.length > 0;
+
+    if (!hasTransactions) {
+      throw new ErrCouldNotSignTransactions();
+    }
+
+    const data = signedPlainTransactions.map((tx) =>
+      Transaction.fromPlainObject(tx)
+    );
+
     this.windowManager.closeWalletWindow();
     return data;
   }
