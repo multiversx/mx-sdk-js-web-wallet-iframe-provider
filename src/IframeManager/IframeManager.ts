@@ -50,7 +50,13 @@ export class IframeManager extends WindowManager {
       this.walletUrl
     );
 
-    return await this.listenOnce(responseTypeMap[type]);
+    const result = await this.listenOnce(responseTypeMap[type]);
+
+    if (result.type === responseTypeMap.CANCEL_ACTION_REQUEST) {
+      this.hasHandshake = false;
+    }
+
+    return result;
   }
 
   public override async closeConnection(): Promise<boolean> {
