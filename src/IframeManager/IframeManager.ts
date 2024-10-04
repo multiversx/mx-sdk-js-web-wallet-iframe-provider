@@ -19,13 +19,15 @@ export class IframeManager extends WindowManager {
   private iframeWalletComponent: IframeProviderContentWindowModel | null = null;
   private readonly iframeId = 'mx-iframe-wallet';
   private loginType = IframeLoginTypes.metamask;
-  private hasHandshake = false;
+  private hasHandshake: boolean;
 
   constructor(props?: { onDisconnect?: () => Promise<boolean> }) {
     super();
     this.registerToChildResponse({
       onDisconnect: props?.onDisconnect
     });
+
+    this.hasHandshake = false;
   }
 
   public get iframeWallet() {
@@ -50,13 +52,7 @@ export class IframeManager extends WindowManager {
       this.walletUrl
     );
 
-    const result = await this.listenOnce(responseTypeMap[type]);
-
-    if (result.type === responseTypeMap.CANCEL_ACTION_REQUEST) {
-      this.hasHandshake = false;
-    }
-
-    return result;
+    return await this.listenOnce(responseTypeMap[type]);
   }
 
   public override async closeConnection(): Promise<boolean> {
@@ -78,7 +74,6 @@ export class IframeManager extends WindowManager {
     if (!this.walletWindow) {
       return;
     }
-
     this.iframeWallet?.setWalletVisible(false);
   }
 
