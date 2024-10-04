@@ -1,12 +1,17 @@
-import { WindowProviderResponseEnums } from '@multiversx/sdk-dapp-utils/out';
-import { responseTypeMap } from '@multiversx/sdk-dapp-utils/out/constants/windowProviderConstants';
-import { WindowProviderRequestEnums } from '@multiversx/sdk-dapp-utils/out/enums/windowProviderEnums';
+import { responseTypeMap } from '@multiversx/sdk-web-wallet-cross-window-provider/out/constants/windowProviderConstants';
+import { WindowProviderResponseEnums } from '@multiversx/sdk-web-wallet-cross-window-provider/out/enums';
+import { WindowProviderRequestEnums } from '@multiversx/sdk-web-wallet-cross-window-provider/out/enums/windowProviderEnums';
 import {
   PostMessageParamsType,
   PostMessageReturnType
-} from '@multiversx/sdk-dapp-utils/out/types';
+} from '@multiversx/sdk-web-wallet-cross-window-provider/out/types';
 import { WindowManager } from '@multiversx/sdk-web-wallet-cross-window-provider/out/WindowManager';
-import { IframeLoginTypes, iframeWindowReadyEvent, safeDocument, safeWindow } from '../constants';
+import {
+  IframeLoginTypes,
+  iframeWindowReadyEvent,
+  safeDocument,
+  safeWindow
+} from '../constants';
 import { IframeProviderEventDataType } from '../IframeProvider';
 import { IframeProviderContentWindowModel } from './IframeProviderContentWindow.model';
 
@@ -14,25 +19,30 @@ export class IframeManager extends WindowManager {
   private iframeWalletComponent: IframeProviderContentWindowModel | null = null;
   private readonly iframeId = 'mx-iframe-wallet';
   private loginType = IframeLoginTypes.metamask;
+  private hasHandshake: boolean;
 
   constructor(props?: { onDisconnect?: () => Promise<boolean> }) {
     super();
     this.registerToChildResponse({
       onDisconnect: props?.onDisconnect
     });
+
+    this.hasHandshake = false;
   }
-  
 
   public get iframeWallet() {
     return this.iframeWalletComponent;
   }
 
-
   public override async postMessage<T extends WindowProviderRequestEnums>({
     type,
     payload
   }: PostMessageParamsType<T>): Promise<PostMessageReturnType<T>> {
-    await this.handshake(type);
+    this.hasHandshake = await this.handshake(type);
+
+    if (!this.hasHandshake) {
+      throw new Error('Cannot establish handshake');
+    }
 
     this.walletWindow?.postMessage(
       {
@@ -57,14 +67,13 @@ export class IframeManager extends WindowManager {
   }
 
   public override isWalletOpened(): boolean {
-    return Boolean(this.walletWindow);
+    return Boolean(this.walletWindow) && this.hasHandshake;
   }
 
   public override closeWalletWindow(): void {
     if (!this.walletWindow) {
       return;
     }
-
     this.iframeWallet?.setWalletVisible(false);
   }
 
