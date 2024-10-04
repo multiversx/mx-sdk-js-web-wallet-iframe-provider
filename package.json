@@ -1,6 +1,6 @@
 {
   "name": "@multiversx/sdk-web-wallet-iframe-provider",
-  "version": "2.0.0-alpha.0",
+  "version": "2.0.0",
   "description": "Signing provider for dApps: Web Wallet Iframe Provider",
   "main": "out/index.js",
   "types": "out/index.d.js",
@@ -11,6 +11,8 @@
     "node": ">=18"
   },
   "scripts": {
+    "unpublish-verdaccio": "npm unpublish @multiversx/sdk-web-wallet-iframe-provider@2.0.0-alpha.0 --registry http://localhost:4873",
+    "publish-verdaccio": "npm run unpublish-verdaccio && npm run compile && npm publish --registry http://localhost:4873/",
     "compile": "tsc -p tsconfig.json",
     "pretest": "npm run compile",
     "prepare": "npm run compile",
@@ -21,7 +23,7 @@
   "license": "GPL-3.0-or-later",
   "devDependencies": {
     "@multiversx/sdk-core": ">= 13.5.0",
-    "@multiversx/sdk-web-wallet-cross-window-provider": ">= 2.0.1",
+    "@multiversx/sdk-web-wallet-cross-window-provider": "2.0.1",
     "@types/node": "18.19.0",
     "@typescript-eslint/eslint-plugin": "5.0.0",
     "@typescript-eslint/parser": "5.14.0",
@@ -42,7 +44,7 @@
   },
   "peerDependencies": {
     "@multiversx/sdk-core": ">= 13.5.0",
-    "@multiversx/sdk-web-wallet-cross-window-provider": ">= 2.0.1"
+    "@multiversx/sdk-web-wallet-cross-window-provider": "2.0.2"
   },
   "dependencies": {
     "@types/jest": "^29.5.11",
