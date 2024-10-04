@@ -1,4 +1,4 @@
-name: Publish sdk-metamask-proxy-provider
+name: Publish sdk-web-wallet-iframe-provider
 
 on:
   push:
