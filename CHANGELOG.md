@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.0.1](https://github.com/multiversx/mx-sdk-js-web-wallet-iframe-provider/pull/9) - 2024-10-10
+- [Fixed unresponsive login](https://github.com/multiversx/mx-sdk-js-web-wallet-iframe-provider/pull/8)
+
 ## [2.0.0](https://github.com/multiversx/mx-sdk-js-web-wallet-iframe-provider/pull/7) - 2024-10-04
 - [Standardize provider](https://github.com/multiversx/mx-sdk-js-web-wallet-iframe-provider/pull/6)
 
