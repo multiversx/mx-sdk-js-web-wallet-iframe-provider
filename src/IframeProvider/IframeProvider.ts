@@ -49,8 +49,6 @@ export class IframeProvider extends CrossWindowProvider {
 
   public override async init(): Promise<boolean> {
     const initialized = await super.init();
-    await this.windowManager.setWalletWindow();
-
     return initialized;
   }
 
