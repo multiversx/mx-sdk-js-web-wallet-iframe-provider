@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.0.0](https://github.com/multiversx/mx-sdk-js-web-wallet-iframe-provider/pull/10) - 2025-03-20
+- [Upgrade sdk-core](https://github.com/multiversx/mx-sdk-js-web-wallet-iframe-provider/pull/8010)
+
 ## [2.0.1](https://github.com/multiversx/mx-sdk-js-web-wallet-iframe-provider/pull/9) - 2024-10-10
 - [Fixed unresponsive login](https://github.com/multiversx/mx-sdk-js-web-wallet-iframe-provider/pull/8)
 
@@ -31,4 +34,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.2.0] - 2024-08-07
 - [Rename IFrameProvider into MetamaskProxyProvider](https://github.com/multiversx/mx-sdk-js-metamask-proxy-provider/pull/1)
+
+
 
