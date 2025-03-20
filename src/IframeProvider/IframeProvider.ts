@@ -1,5 +1,4 @@
-import { Message } from '@multiversx/sdk-core/out';
-import { Transaction } from '@multiversx/sdk-core/out/transaction';
+import { Message, Transaction } from '@multiversx/sdk-core';
 import {
   CrossWindowProvider,
   IProviderAccount
