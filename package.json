@@ -20,10 +20,10 @@
     "test": "jest"
   },
   "author": "MultiversX",
-  "license": "GPL-3.0-or-later",
+  "license": "MIT",
   "devDependencies": {
-    "@multiversx/sdk-core": ">= 13.5.0",
-    "@multiversx/sdk-web-wallet-cross-window-provider": ">= 2.0.1",
+    "@multiversx/sdk-core": "^14.x",
+    "@multiversx/sdk-web-wallet-cross-window-provider": "^3.x",
     "@types/node": "18.19.0",
     "@typescript-eslint/eslint-plugin": "5.0.0",
     "@typescript-eslint/parser": "5.14.0",
@@ -43,8 +43,8 @@
     "typescript": "5.0.4"
   },
   "peerDependencies": {
-    "@multiversx/sdk-core": ">= 13.5.0",
-    "@multiversx/sdk-web-wallet-cross-window-provider": ">= 2.0.1"
+    "@multiversx/sdk-core": "^14.x",
+    "@multiversx/sdk-web-wallet-cross-window-provider": "^3.x"
   },
   "dependencies": {
     "@types/jest": "^29.5.11",
