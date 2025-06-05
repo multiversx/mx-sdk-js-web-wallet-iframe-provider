@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.0.1](https://github.com/multiversx/mx-sdk-js-web-wallet-iframe-provider/pull/12) - 2025-06-05
+
 - [Added handshake connection](https://github.com/multiversx/mx-sdk-js-web-wallet-iframe-provider/pull/11)
 
 ## [3.0.0](https://github.com/multiversx/mx-sdk-js-web-wallet-iframe-provider/pull/10) - 2025-03-20
