@@ -67,6 +67,12 @@ export class IframeProvider extends CrossWindowProvider {
     } = {}
   ): Promise<IProviderAccount> {
     await this.windowManager.setWalletWindow();
+
+    // ensure wallet is loaded in IFrame before sending a loginRequest
+    await this.windowManager.listenOnce(
+      WindowProviderResponseEnums.handshakeResponse
+    );
+
     const account = await super.login(options);
 
     if (!account.address) {
