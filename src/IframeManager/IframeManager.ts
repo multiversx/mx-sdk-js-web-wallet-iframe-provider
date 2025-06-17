@@ -13,12 +13,16 @@ import {
   safeWindow
 } from '../constants';
 import { IframeProviderEventDataType } from '../IframeProvider';
-import { IframeProviderContentWindowModel } from './IframeProviderContentWindow.model';
+import {
+  ExtendedIframeLoginType,
+  IframeProviderContentWindowModel,
+  LoginBrandingType
+} from './IframeManager.types';
 
 export class IframeManager extends WindowManager {
   private iframeWalletComponent: IframeProviderContentWindowModel | null = null;
   private readonly iframeId = 'mx-iframe-wallet';
-  private loginType = IframeLoginTypes.metamask;
+  private loginType: ExtendedIframeLoginType = IframeLoginTypes.metamask;
   private hasHandshake: boolean;
 
   constructor(props?: { onDisconnect?: () => Promise<boolean> }) {
@@ -62,7 +66,7 @@ export class IframeManager extends WindowManager {
     return result;
   }
 
-  public async setLoginType(loginType: IframeLoginTypes) {
+  public async setLoginType(loginType: ExtendedIframeLoginType) {
     this.loginType = loginType;
   }
 
@@ -117,6 +121,10 @@ export class IframeManager extends WindowManager {
 
   public setWalletVisible(visible: boolean): void {
     this.iframeWalletComponent?.setWalletVisible(visible);
+  }
+
+  public setLoginBranding(loginBranding: LoginBrandingType): void {
+    this.iframeWalletComponent?.setLoginBranding(loginBranding);
   }
 
   private registerToChildResponse = <
