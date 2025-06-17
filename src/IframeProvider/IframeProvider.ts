@@ -18,6 +18,10 @@ import {
 import { ReplyWithPostMessagePayloadType } from '@multiversx/sdk-web-wallet-cross-window-provider/out/types';
 import { IframeLoginTypes } from '../constants';
 import { IframeManager } from '../IframeManager/IframeManager';
+import {
+  ExtendedIframeLoginType,
+  LoginBrandingType
+} from '../IframeManager/IframeManager.types';
 
 export type IframeProviderEventDataType<T extends WindowProviderResponseEnums> =
   {
@@ -28,7 +32,7 @@ export type IframeProviderEventDataType<T extends WindowProviderResponseEnums> =
 export class IframeProvider extends CrossWindowProvider {
   protected static _instance: IframeProvider | null = null;
   protected readonly windowManager: IframeManager;
-  private loginType: IframeLoginTypes = IframeLoginTypes.metamask;
+  private loginType: ExtendedIframeLoginType = IframeLoginTypes.metamask;
 
   public constructor() {
     super();
@@ -51,9 +55,13 @@ export class IframeProvider extends CrossWindowProvider {
     return initialized;
   }
 
-  public setLoginType(loginType: IframeLoginTypes): void {
+  public setLoginType(loginType: ExtendedIframeLoginType): void {
     this.loginType = loginType;
     this.windowManager.setLoginType(loginType);
+  }
+
+  public setLoginBranding(loginBranding: LoginBrandingType): void {
+    this.windowManager.setLoginBranding(loginBranding);
   }
 
   public override setWalletUrl(url: string): CrossWindowProvider {
@@ -148,7 +156,7 @@ export class IframeProvider extends CrossWindowProvider {
     }
 
     const data = signedPlainTransactions.map((tx) =>
-      Transaction.fromPlainObject(tx)
+      Transaction.newFromPlainObject(tx)
     );
 
     this.windowManager.closeWalletWindow();
