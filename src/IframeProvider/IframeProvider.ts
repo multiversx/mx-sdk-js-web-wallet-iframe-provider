@@ -18,7 +18,10 @@ import {
 import { ReplyWithPostMessagePayloadType } from '@multiversx/sdk-web-wallet-cross-window-provider/out/types';
 import { IframeLoginTypes } from '../constants';
 import { IframeManager } from '../IframeManager/IframeManager';
-import { LoginBrandingType } from '../IframeManager/IframeManager.types';
+import {
+  ExtendedIframeLoginType,
+  LoginBrandingType
+} from '../IframeManager/IframeManager.types';
 
 export type IframeProviderEventDataType<T extends WindowProviderResponseEnums> =
   {
@@ -29,7 +32,7 @@ export type IframeProviderEventDataType<T extends WindowProviderResponseEnums> =
 export class IframeProvider extends CrossWindowProvider {
   protected static _instance: IframeProvider | null = null;
   protected readonly windowManager: IframeManager;
-  private loginType: IframeLoginTypes = IframeLoginTypes.metamask;
+  private loginType: ExtendedIframeLoginType = IframeLoginTypes.metamask;
 
   public constructor() {
     super();
@@ -52,7 +55,7 @@ export class IframeProvider extends CrossWindowProvider {
     return initialized;
   }
 
-  public setLoginType(loginType: IframeLoginTypes): void {
+  public setLoginType(loginType: ExtendedIframeLoginType): void {
     this.loginType = loginType;
     this.windowManager.setLoginType(loginType);
   }

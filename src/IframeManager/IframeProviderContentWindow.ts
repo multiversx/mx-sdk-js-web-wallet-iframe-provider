@@ -13,7 +13,7 @@ import {
   toggleIconElementStyle
 } from './IframeManager.styles';
 import {
-  IframeLoginTypesExtended,
+  ExtendedIframeLoginType,
   IframeProviderContentWindowModel,
   IframeProviderContentWindowProps,
   LoginBrandingType
@@ -42,7 +42,7 @@ export class IframeProviderContentWindow
   private readonly title: HTMLDivElement;
   private readonly body: HTMLDivElement;
   private readonly iframe: HTMLIFrameElement;
-  private loginType: IframeLoginTypesExtended = IframeLoginTypes.metamask;
+  private loginType: ExtendedIframeLoginType = IframeLoginTypes.metamask;
 
   public constructor(props: IframeProviderContentWindowProps) {
     const { id, url, anchor, loginType } = props;

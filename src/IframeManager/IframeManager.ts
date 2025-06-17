@@ -14,6 +14,7 @@ import {
 } from '../constants';
 import { IframeProviderEventDataType } from '../IframeProvider';
 import {
+  ExtendedIframeLoginType,
   IframeProviderContentWindowModel,
   LoginBrandingType
 } from './IframeManager.types';
@@ -21,7 +22,7 @@ import {
 export class IframeManager extends WindowManager {
   private iframeWalletComponent: IframeProviderContentWindowModel | null = null;
   private readonly iframeId = 'mx-iframe-wallet';
-  private loginType = IframeLoginTypes.metamask;
+  private loginType: ExtendedIframeLoginType = IframeLoginTypes.metamask;
   private hasHandshake: boolean;
 
   constructor(props?: { onDisconnect?: () => Promise<boolean> }) {
@@ -65,7 +66,7 @@ export class IframeManager extends WindowManager {
     return result;
   }
 
-  public async setLoginType(loginType: IframeLoginTypes) {
+  public async setLoginType(loginType: ExtendedIframeLoginType) {
     this.loginType = loginType;
   }
 

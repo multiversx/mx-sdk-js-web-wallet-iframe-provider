@@ -4,7 +4,7 @@ const IframeLoginTypesExtended = {
   ...IframeLoginTypes
 } as const;
 
-export type IframeLoginTypesExtended<
+export type ExtendedIframeLoginType<
   T extends
     keyof typeof IframeLoginTypesExtended = keyof typeof IframeLoginTypesExtended
 > = T;
