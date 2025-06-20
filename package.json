@@ -1,6 +1,6 @@
 {
   "name": "@multiversx/sdk-web-wallet-iframe-provider",
-  "version": "3.0.2",
+  "version": "3.0.3",
   "description": "Signing provider for dApps: Web Wallet Iframe Provider",
   "main": "out/index.js",
   "types": "out/index.d.js",
