@@ -174,8 +174,4 @@ export class IframeProvider extends CrossWindowProvider {
     this.windowManager.closeWalletWindow();
     return data;
   }
-
-  public override async openPopupConsent(): Promise<boolean> {
-    return true;
-  }
 }

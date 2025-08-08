@@ -81,10 +81,10 @@ export class IframeManager extends WindowManager {
     this.iframeWallet?.setWalletVisible(false);
   }
 
-  public override async setWalletWindow(): Promise<void> {
+  public override async setWalletWindow(): Promise<boolean> {
     if (this.walletWindow) {
       this.iframeWallet?.setWalletVisible(true);
-      return;
+      return true;
     }
 
     const anchor = safeDocument.getElementById?.('root');
@@ -117,6 +117,7 @@ export class IframeManager extends WindowManager {
 
     this.walletWindow = iframe.contentWindow;
     this.setWalletVisible(true);
+    return true;
   }
 
   public setWalletVisible(visible: boolean): void {
