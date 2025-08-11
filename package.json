@@ -22,7 +22,7 @@
   "author": "MultiversX",
   "license": "MIT",
   "devDependencies": {
-    "@multiversx/sdk-core": "^14.0.0 || ^15.0.0",
+    "@multiversx/sdk-core": "^15.0.0",
     "@multiversx/sdk-web-wallet-cross-window-provider": "^3.x",
     "@types/node": "18.19.0",
     "@typescript-eslint/eslint-plugin": "5.0.0",
