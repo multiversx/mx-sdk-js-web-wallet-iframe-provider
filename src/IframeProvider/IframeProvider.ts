@@ -107,6 +107,7 @@ export class IframeProvider extends CrossWindowProvider {
 
     this.initialized = false;
     this.disconnect();
+    IframeProvider._instance = null;
 
     return true;
   }
