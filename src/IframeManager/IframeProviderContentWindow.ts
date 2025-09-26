@@ -1,9 +1,8 @@
-import { iframeStyle } from './IframeManager.styles';
+import { iframeWindowReadyEvent, safeDocument } from '../constants';
 import {
   IframeProviderContentWindowModel,
   IframeProviderContentWindowProps
 } from './IframeManager.types';
-import { iframeWindowReadyEvent, safeDocument } from '../constants';
 
 export class IframeProviderContentWindow
   implements IframeProviderContentWindowModel
@@ -21,7 +20,6 @@ export class IframeProviderContentWindow
 
     this.iframe.id = id;
     this.iframe.src = url;
-    this.iframe.style.cssText = iframeStyle;
 
     this.container.appendChild(this.iframe);
     safeDocument.body?.appendChild?.(this.container);
