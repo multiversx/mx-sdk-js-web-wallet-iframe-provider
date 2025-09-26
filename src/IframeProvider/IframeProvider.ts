@@ -16,12 +16,7 @@ import {
   ErrTransactionCancelled
 } from '@multiversx/sdk-web-wallet-cross-window-provider/out/errors';
 import { ReplyWithPostMessagePayloadType } from '@multiversx/sdk-web-wallet-cross-window-provider/out/types';
-import { IframeLoginTypes } from '../constants';
 import { IframeManager } from '../IframeManager/IframeManager';
-import {
-  ExtendedIframeLoginType,
-  LoginBrandingType
-} from '../IframeManager/IframeManager.types';
 
 export type IframeProviderEventDataType<T extends WindowProviderResponseEnums> =
   {
@@ -32,13 +27,10 @@ export type IframeProviderEventDataType<T extends WindowProviderResponseEnums> =
 export class IframeProvider extends CrossWindowProvider {
   protected static _instance: IframeProvider | null = null;
   protected readonly windowManager: IframeManager;
-  private loginType: ExtendedIframeLoginType = IframeLoginTypes.metamask;
 
   public constructor() {
     super();
-    this.windowManager = new IframeManager({
-      onDisconnect: this.logout.bind(this)
-    });
+    this.windowManager = new IframeManager();
   }
 
   public static getInstance(): IframeProvider {
@@ -51,22 +43,9 @@ export class IframeProvider extends CrossWindowProvider {
   }
 
   public override async init(): Promise<boolean> {
+    console.log('TRYING TO INIT NEW IFRAME WALLET');
     const initialized = await super.init();
     return initialized;
-  }
-
-  public setLoginType(loginType: ExtendedIframeLoginType): void {
-    this.loginType = loginType;
-    this.windowManager.setLoginType(loginType);
-  }
-
-  public setLoginBranding(loginBranding: LoginBrandingType): void {
-    this.windowManager.setLoginBranding(loginBranding);
-  }
-
-  public override setWalletUrl(url: string): CrossWindowProvider {
-    const newUrl = `${url}/?iframeProviderLoginType=${this.loginType}`;
-    return super.setWalletUrl(newUrl);
   }
 
   public override async login(
@@ -74,23 +53,30 @@ export class IframeProvider extends CrossWindowProvider {
       token?: string;
     } = {}
   ): Promise<IProviderAccount> {
-    await this.windowManager.setWalletWindow();
+    try {
+      await this.windowManager.setWalletWindow();
 
-    const account = await super.login(options);
+      const account = await super.login(options);
 
-    if (!account.address) {
-      this.windowManager.iframeWallet?.remove();
-      this.windowManager.walletWindow = null;
-      throw new ErrCouldNotLogin();
+      if (!account.address) {
+        this.windowManager.iframeWallet?.remove();
+        this.windowManager.walletWindow = null;
+        throw new ErrCouldNotLogin();
+      }
+
+      this.windowManager.closeWalletWindow();
+
+      return account;
+    } catch (error) {
+      this.cleanup();
+      throw error;
     }
-
-    this.windowManager.closeWalletWindow();
-
-    return account;
   }
 
-  public override async dispose(): Promise<boolean> {
-    return super.dispose();
+  private cleanup() {
+    this.initialized = false;
+    this.disconnect();
+    IframeProvider._instance = null;
   }
 
   public override async logout(): Promise<boolean> {
@@ -105,9 +91,7 @@ export class IframeProvider extends CrossWindowProvider {
       console.error(e);
     }
 
-    this.initialized = false;
-    this.disconnect();
-    IframeProvider._instance = null;
+    this.cleanup();
 
     return true;
   }
@@ -170,7 +154,6 @@ export class IframeProvider extends CrossWindowProvider {
 
   public override async signMessage(messageToSign: Message): Promise<Message> {
     await this.windowManager.setWalletWindow();
-    messageToSign.signer = this.loginType;
     const data = await super.signMessage(messageToSign);
     this.windowManager.closeWalletWindow();
     return data;
