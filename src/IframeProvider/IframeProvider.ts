@@ -43,7 +43,6 @@ export class IframeProvider extends CrossWindowProvider {
   }
 
   public override async init(): Promise<boolean> {
-    console.log('TRYING TO INIT NEW IFRAME WALLET');
     const initialized = await super.init();
     return initialized;
   }
