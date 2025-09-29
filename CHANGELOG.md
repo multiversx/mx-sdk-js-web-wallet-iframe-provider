@@ -7,7 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [4.0.0] (https://github.com/multiversx/mx-sdk-js-web-wallet-iframe-provider/pull/20) - 2025-09-29
+## [4.0.0] (https://github.com/multiversx/mx-sdk-js-web-wallet-iframe-provider/pull/21) - 2025-09-29
+
+- [Removed iframe UI, introduce no-UI proxy](https://github.com/multiversx/mx-sdk-js-web-wallet-iframe-provider/pull/20)
 
 ## [3.1.2] (https://github.com/multiversx/mx-sdk-js-web-wallet-iframe-provider/pull/19) - 2025-09-15
 
