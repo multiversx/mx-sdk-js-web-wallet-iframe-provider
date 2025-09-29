@@ -1,6 +1,6 @@
 # mx-sdk-js-web-wallet-iframe-provider
 
-Signing provider for dApps: Web Wallet Iframe Provider. 
+Signing provider for dApps: Web Wallet Iframe Provider.
 
 Documentation is available on [docs.multiversx.com](https://docs.multiversx.com/sdk-and-tools/sdk-js/sdk-js-signing-providers), while an integration example can be found [here](https://github.com/multiversx/mx-sdk-js-examples/tree/main/signing-providers).
 
@@ -23,6 +23,6 @@ npm install @multiversx/sdk-web-wallet-iframe-provider
 In order to compile the library, run the following:
 
 ```
-npm install
-npm run compile
+pnpm install
+pnpm run compile
 ```
