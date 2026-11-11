@@ -3,6 +3,11 @@
         "module": "CommonJS",
         "target": "es2015",
         "outDir": "out",
+        "rootDir": "src",
+        "types": [
+            "node",
+            "jest"
+        ],
         "lib": [
             "es2015",
             "dom"

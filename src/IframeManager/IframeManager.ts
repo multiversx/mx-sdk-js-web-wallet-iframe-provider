@@ -5,13 +5,23 @@ import {
   PostMessageReturnType
 } from '@multiversx/sdk-web-wallet-cross-window-provider/out/types';
 import { WindowManager } from '@multiversx/sdk-web-wallet-cross-window-provider/out/WindowManager';
-import { IframeProviderContentWindowModel } from './IframeManager.types';
 import { iframeWindowReadyEvent } from '../constants';
+import { IframeProviderContentWindowModel } from './IframeManager.types';
+
+const isAllowedWalletUrl = (url: string) => {
+  try {
+    const { protocol } = new URL(url);
+    return protocol === 'https:' || protocol === 'http:';
+  } catch {
+    return false;
+  }
+};
 
 export class IframeManager extends WindowManager {
   private iframeWalletComponent: IframeProviderContentWindowModel | null = null;
   private readonly iframeId = 'mx-iframe-wallet';
   private hasHandshake: boolean;
+  private pendingWalletWindow: Promise<boolean> | null = null;
 
   constructor() {
     super();
@@ -45,10 +55,19 @@ export class IframeManager extends WindowManager {
   }
 
   public override async closeConnection(): Promise<boolean> {
-    const result = await super.closeConnection();
+    try {
+      return await super.closeConnection();
+    } finally {
+      // Remove the wallet iframe even if the logout message fails
+      this.removeIframe();
+    }
+  }
+
+  private removeIframe() {
     this.iframeWalletComponent?.remove();
+    this.iframeWalletComponent = null;
     this.walletWindow = null;
-    return result;
+    this.hasHandshake = false;
   }
 
   public override isWalletOpened(): boolean {
@@ -65,6 +84,23 @@ export class IframeManager extends WindowManager {
     if (this.walletWindow) {
       return true;
     }
+
+    // Concurrent calls share one iframe instead of each creating their own
+    if (!this.pendingWalletWindow) {
+      this.pendingWalletWindow = this.createIframe().finally(() => {
+        this.pendingWalletWindow = null;
+      });
+    }
+
+    return this.pendingWalletWindow;
+  }
+
+  private async createIframe(): Promise<boolean> {
+    if (!isAllowedWalletUrl(this.walletUrl)) {
+      throw new Error('Invalid wallet URL: only http(s) URLs are allowed');
+    }
+    
+    this.removeIframe();
 
     const module = await import('./IframeProviderContentWindow');
     const IframeProviderContentWindow = module.IframeProviderContentWindow;

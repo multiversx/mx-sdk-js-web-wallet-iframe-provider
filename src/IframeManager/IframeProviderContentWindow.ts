@@ -4,9 +4,7 @@ import {
   IframeProviderContentWindowProps
 } from './IframeManager.types';
 
-export class IframeProviderContentWindow
-  implements IframeProviderContentWindowModel
-{
+export class IframeProviderContentWindow implements IframeProviderContentWindowModel {
   public contentWindow: Window | null = null;
   public walletAddress = '';
   private readonly container: HTMLDivElement;
